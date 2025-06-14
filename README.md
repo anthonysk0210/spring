@@ -1,7 +1,9 @@
 # spring
-Spring Boot MyWeb應用環境設定總覽
+Spring Boot 應用環境設定總覽
 
 ⚙️ 應用啟動設定
+Project：Maven
+Java Version：17
 伺服器埠號：8081
 應用程式執行於 localhost:8081，非預設的 8080。
 測試用登入帳號/密碼：
