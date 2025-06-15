@@ -31,14 +31,14 @@
 - **Spring Boot Actuator & Admin**：系統監控與管理
 
 ### 核心實作功能
-- ✅ 審計功能：AuditorAware 自動寫入 createdAt、createdBy 等欄位
+- ✅ 審計功能：AuditorAware 自動寫入 createdAt、createdBy、updatedAt、updatedBy 等欄位
 - ✅ 分頁排序：Pageable 實作聯絡表單查詢
 - ✅ Lombok：使用 @Data、@Slf4j 精簡樣板程式碼
 - ✅ AOP：使用 @Around、@AfterThrowing 實作 LoggerAspect 方法攔截與日誌紀錄
 - ✅ 表單驗證：@Valid + BindingResult 與自訂驗證註解
 - ✅ Thymeleaf 整合：th:replace 重用元件、sec:authorize 控制頁面內容顯示
 - ✅ REST API：手動建構與 Spring Data REST 並行支援
-- ✅ 例外處理：@ControllerAdvice / @RestControllerAdvice 提高穩定性
+- ✅ 例外處理：@ControllerAdvice / @RestControllerAdvice 例外分離提高穩定性
 
 ## 🗃️ 資料庫實體關聯
 - Person ↔ Role：@ManyToOne（單向）
