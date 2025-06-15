@@ -79,9 +79,20 @@
 - 全部啟用：`management.endpoints.web.exposure.include=*`
 - 共用埠號 8081
 
-## 🖥️ Spring Boot Admin
-- 註冊伺服器位置：`http://localhost:8083`
-- 登入資訊：admin@gmail.com / admin
+## 🖥️ 系統監控模組：Spring Boot (AdminActuator)
+
+本模組負責提供監控界面與監控端點整合，需搭配主系統共同啟動。
+
+- 模組名稱：AdminActuator
+- 啟動位置：`com.company.AdminActuatorApplication`
+- 埠號：8083
+- 功能：
+  - 顯示應用健康狀態（health）
+  - 檢視應用端點（endpoints）
+  - 查看環境變數、日誌、記憶體等即時資訊
+- 用戶認證資訊（提供給被監控端）：
+  - 帳號：admin@gmail.com
+  - 密碼：admin
 
 ## 📡 REST API 客戶端模組（ConsumingRestService）
 - 應用名稱：ConsumingRestService
