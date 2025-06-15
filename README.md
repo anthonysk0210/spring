@@ -1,89 +1,96 @@
 # Spring Boot 教育平台系統專案
 
-本專案模擬一個線上課程教育平台，整合 Spring Boot 生態系統中的多項技術，實作使用者角色分層權限控管、資料操作與安全性驗證，具備完整後端開發與系統整合能力。
+本專案模擬一個線上課程教育平台系統，使用 Spring Boot 為核心技術，實作使用者註冊、課程選修與分層權限控制。系統包含學生與管理員兩類角色功能，支援前後端分離與安全性驗證，完整展現企業級 Web 開發能力。
 
-## 🧩 使用者角色權限概述
+## 🧩 使用者角色權限總覽
 
 ### 匿名訪客
-- 瀏覽公開頁面：首頁、關於我們、最新消息、聯絡我們
+- 瀏覽首頁(HOME)、關於我們(ABOUT)、最新消息(NEWS)、聯絡我們(CONTACT)
 - 提交聯絡表單
-- 註冊成為學生帳號
+- 註冊帳號
 
-### 學生（登入後）
-- 學生儀錶板（Dashboard）：查看所屬方案
-- 修改／更新個人資料
-- 選購課程／查看已購課程
+### 學生
+- 查看個人儀錶板（方案資訊）
+- 修改/更新個人資料
+- 選購課程、查看已購清單
 
-### 管理員（登入後）
-- 管理員儀錶板
-- 更新個人資料
-- 查看聯絡表單內容
-- 管理方案與課程（新增／刪除、設定所屬學生）
+### 管理員
+- 存取管理員儀錶板
+- 修改/更新個人資料
+- 查看聯絡表單訊息
+- 管理方案（新增／刪除／設定學生）
+- 管理課程（新增／刪除／指派學生）
 
-## 🔧 技術整合亮點
+## 🔧 技術整合與系統亮點
 
-### Spring Framework 模組
-- `Spring Boot MVC`：三層架構設計（@Controller / @Service / @Repository）
-- `Spring Security`：
-  - 登入／登出與角色授權
-  - CSRF 防護、Bcrypt 密碼加密
-  - 自訂登入頁與導向邏輯
-- `Spring Data JPA & JDBC`：
-  - 操作 H2 Database
-  - ORM 實體映射與資料關聯（@OneToOne, @ManyToOne, @ManyToMany）
-- `Spring Data REST`：自動生成 REST API
-- `Spring Boot Actuator` 與 `Admin`：系統監控與健康檢查
+### Spring 技術架構
+- **Spring Boot MVC**：採三層架構 @Controller / @Service / @Repository
+- **Spring Security**：登入／授權／登出，CSRF 防護，Bcrypt 密碼加密，自訂登入邏輯與頁面
+- **Spring Data JPA & JDBC**：H2 資料庫操作、ORM 映射、多對多／一對一／雙向關聯
+- **Spring Data REST**：自動化建構 RESTful API
+- **Spring Boot Actuator & Admin**：系統監控與管理
 
-### 其他整合功能
-- ✅ 審計功能：`AuditorAware` 自動填入 createdAt / updatedBy 等欄位
-- ✅ Lombok：簡化樣板程式碼（@Data, @Slf4j 等）
-- ✅ AOP：使用 @Around 與 @AfterThrowing 建立統一日誌切面
-- ✅ 表單驗證：
-  - @Valid 與 BindingResult 驗證邏輯
-  - 自訂驗證註解（如 email、密碼確認）
-  - 與 Thymeleaf 整合即時回饋
-- ✅ Thymeleaf 模板引擎：
-  - th:replace 模組化元件（如 Navbar）
-  - sec:authorize 控制內容顯示
-  - 支援 Model, ModelAndView, @PathVariable, @RequestParam 等傳值方式
-- ✅ 分頁與排序：使用 Pageable 優化聯絡表單查詢效率
+### 核心實作功能
+- ✅ 審計功能：AuditorAware 自動寫入 createdAt、createdBy 等欄位
+- ✅ 分頁排序：Pageable 實作聯絡表單查詢
+- ✅ Lombok：使用 @Data、@Slf4j 精簡樣板程式碼
+- ✅ AOP：使用 @Around、@AfterThrowing 實作 LoggerAspect 方法攔截與日誌紀錄
+- ✅ 表單驗證：@Valid + BindingResult 與自訂驗證註解
+- ✅ Thymeleaf 整合：th:replace 重用元件、sec:authorize 控制頁面內容顯示
+- ✅ REST API：手動建構與 Spring Data REST 並行支援
+- ✅ 例外處理：@ControllerAdvice / @RestControllerAdvice 提高穩定性
 
-## 🌐 REST API 設定
+## 🗃️ 資料庫實體關聯
+- Person ↔ Role：@ManyToOne（單向）
+- Person ↔ Address：@OneToOne（單向）
+- Person ↔ Plan：@ManyToOne ↔ @OneToMany（雙向）
+- Person ↔ Course：@ManyToMany ↔ @ManyToMany（雙向）
+
+## ⚙️ 系統啟動設定
+- Java：17
+- Build：Maven
+- 埠號：8081
+- 測試帳號：
+  - admin@gmail.com / admin
+  - student@gmail.com / student
+  - anthony@gmail.com / anthony
+
+## 🛢️ H2 資料庫設定
+- 位置：`jdbc:h2:mem:testdb`
+- H2 Console：`http://localhost:8081/h2-console`
+- 登入：使用者 sa／密碼空白／Driver：org.h2.Driver
+
+## 🌐 REST API 路由
 
 ### ContactRestController
 - 路徑：`/api/contact`
-- 權限：限 ADMIN 存取
-- 支援格式：application/json、application/xml
+- 僅限 ROLE_ADMIN 存取
+- 範例：`/api/contact/getContactMessageByStatus?status=OPEN`
+- 支援格式：JSON／XML
 
-### Spring Data REST
-- 路徑前綴：`/spring-data-api`
-- 功能：自動生成 CRUD API（限 ADMIN）
-- HAl Explorer：`/spring-data-api` 可視化探索介面
+### Spring Data REST 自動端點
+- 路徑：`/spring-data-api`
+- 僅限 ROLE_ADMIN 存取
+- 範例：`/spring-data-api/contacts`
+- HAL Explorer：`/spring-data-api`
 
-## 🧪 系統運行環境
+## 📊 Actuator 監控端點
+- 基底路徑：`/myWeb/actuator`
+- 全部啟用：`management.endpoints.web.exposure.include=*`
+- 共用埠號 8081
 
-- Java：17  
-- Build Tool：Maven  
-- Web Port：8081  
-- Database：H2（In-Memory）
-- H2 Console：`http://localhost:8081/h2-console`  
-- 測試帳號：
-  - Admin：`admin@gmail.com / admin`
-  - Student：`student@gmail.com / student`
-  - Anthony：`anthony@gmail.com / anthony`
+## 🖥️ Spring Boot Admin
+- 註冊伺服器位置：`http://localhost:8083`
+- 登入資訊：admin@gmail.com / admin
 
-## 🔁 其他模組（REST 客戶端）
-
-### ConsumingRestService
-- 埠號：8082
-- 技術：整合 FeignClient、RestTemplate、WebClient
+## 📡 REST API 客戶端模組（ConsumingRestService）
+- 應用名稱：ConsumingRestService
 - 控制器位置：`com.company.ConsumingRestService.controller`
-
-## 🔗 GitHub 專案連結
-
-[📁 GitHub Repository](https://github.com/anthonysk0210/spring.git)
+- 埠號：8082
+- 實作：FeignClient、RestTemplate、WebClient
 
 ---
 
-本專案展示從登入認證、資料操作到角色權限管理的完整實作流程，適合作為 Java / Spring Boot 技術整合與後端開發實戰參考。
+本專案展示從認證授權、資料建模、REST API 架構、系統監控到例外處理的完整實作，適合作為 Spring Boot 全端後端開發學習範例。
 
+🔗 GitHub 專案連結：[https://github.com/anthonysk0210/spring.git](https://github.com/anthonysk0210/spring.git)
