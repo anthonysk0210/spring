@@ -95,7 +95,8 @@
   - 密碼：admin
 
 ## 📡 REST API 客戶端模組（ConsumingRestService）
-- 應用名稱：ConsumingRestService
+- 模組名稱：ConsumingRestService
+- 啟動位置：`com.company.ConsumingRestServiceApplication`
 - 控制器位置：`com.company.ConsumingRestService.controller`
 - 埠號：8082
 - 實作：FeignClient、RestTemplate、WebClient
